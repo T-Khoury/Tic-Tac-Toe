@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin: 2rem;
+}
+
+.game-container {
+    display: grid;
+    place-items: center;
+    margin-top: 40%;
+}
+
+.gameboard {
+    background-color: lightgreen;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    height: 40vh;
+    width: 40vh;
+}
+
