@@ -10,11 +10,23 @@
     padding: 0;
 }
 
+body {
+  background-image: url(images/stacked-steps-haikei\ \(2\).svg);
+}
+
 h1 {
     text-align: center;
     margin: 2rem;
     font-family: "Righteous";
     font-size: 3rem;
+}
+
+h2 {
+  grid-area: toggle;
+  justify-self: center;
+  position: relative;
+  bottom: 1rem;
+  font-family: "Righteous";
 }
 
 .game-container {
@@ -38,20 +50,68 @@ h1 {
     background-color: transparent;
 }
 
+.settings-modal {
+    display: none;
+    position: fixed;
+    padding-top: 265px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.settings-modal-content {
+    display: grid;
+    grid-template-rows: max-content max-content 1fr;
+    grid-template-areas: 
+    "close"
+    "toggle"
+    "form";
+    position: relative;
+    background-color: #f3f4f6;
+    padding: 20px;
+    margin: auto;
+    width: 60%;
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+    border-radius: 12px;
+}
+.modal-close-btn {
+    color: lightgray;
+    font-size: 24px;
+    font-weight: bold;
+    justify-self: end;
+    grid-area: close;
+}
+.modal-close-btn:hover {
+    color: rgb(221, 6, 6);
+}
+@-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0}
+    top {top:0; opacity: 1;}
+}
+@keyframes animatetop {
+    from {top:-300px; opacity: 0;}
+    to {top:0; opacity: 1;}
+}
+
 
 .toggle {
     --width: 125px;
     --height: calc(var(--width) / 4);
     position: relative;
-    left: 36%;
-    top: 9rem;
-
+    place-self: center;
     display: inline-block;
     width: var(--width);
     height: var(--height);
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.3);
     border-radius: var(--height);
     cursor: pointer;
+    grid-area: toggle;
+    margin: 1rem 0;
   }
 
   .toggle input {
@@ -130,3 +190,30 @@ h1 {
 
   .toggle input:checked~.labels::before {
     opacity: 1;
+  }
+
+#submit-button {
+  display: block;
+  width: 12rem;
+  height: 2rem;
+  background-color: yellowgreen;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+form > label{
+  display: block;
+  font-family: "Righteous";
+}
+#game-settings {
+  grid-area: form;
+  place-self: center;
+}
+
+#playerOneName,
+#playerTwoName {
+  margin: .2rem 0;
+  font-family: "Righteous";
+  width: 11rem;
+
+}

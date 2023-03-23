@@ -10,11 +10,25 @@
 </head>
 <body>
     <h1>Tic-Tac-Toe</h1>
-    <label class="toggle">
-        <input type="checkbox" class="modetoggle">
-        <span class="slider"></span>
-        <span class="labels" data-on="CPU" data-off="1V1"></span>
-    </label>
+    <div class="settings-modal">
+        <div class="settings-modal-content">
+            <span class="modal-close-btn">&times;</span>
+            <h2>Mode:</h2>
+            <label class="toggle">
+                <input type="checkbox" class="modetoggle">
+                <span class="slider"></span>
+                <span class="labels" data-on="CPU" data-off="1V1"></span>
+            </label>
+            <form id="game-settings">
+                <label for="playerOneName" class="playerOneName">Player 1 Name</label>
+                <input type="text" id="playerOneName" name="playerOneName" value ="Player 1" placeholder="Player 1">
+                <label for="playerTwoName" class="playerTwoName">Player 2 Name</label>
+                <input type="text" id="playerTwoName" name="playerTwoName" value="Player 2" placeholder="Player 2">
+                <button type="submit", form="game-settings", id="submit-button">Play</button>
+            </form>
+        </div>
+    </div>
+    
     <div class="game-container">
         <div class="gameboard">
             

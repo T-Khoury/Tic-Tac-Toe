@@ -21,9 +21,31 @@ const displayController = (function() {
 
     const players  = [];
 
+    const settingsModal = document.querySelector('.settings-modal');
+    const gameSettings = document.querySelector('#game-settings')
+
+    const submitButton = document.querySelector('#submit-button');
+
+    const modalCloseButton = document.querySelector('.modal-close-btn');
+
+
+    function settingsModalHandler() {
+        settingsModal.style.display = "block";
+        window.onclick = function(e) {
+            if(e.target == settingsModal) {
+                settingsModal.style.display = "none"
+            }
+        }
+    }
+
+
+
     function getGameMode() {
         const modeToggle = document.querySelector('.modetoggle');
         console.log(modeToggle.checked);
+        if (modeToggle.checked) {
+
+        }
     }
 
     function updateDisplay() {
@@ -49,12 +71,22 @@ const displayController = (function() {
     };
 
     boardDiv.addEventListener('click', clickHandler)
+    modalCloseButton.addEventListener('click', () => {
+        settingsModal.style.display = "none";
+    });
+    submitButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        settingsModal.style.display = "none";
+        gameSettings.reset();
+     
+    });
 
     return {
         updateDisplay,
         getGameMode,
-        clickHandler
-    }
+        clickHandler,
+        settingsModalHandler
+    };
 })();
 
 const Player = (name, marker) => {
@@ -70,3 +102,4 @@ const Player = (name, marker) => {
 gameBoard.getBoard();
 const Trevor = Player('Trevor', 'O');
 displayController.updateDisplay();
+displayController.settingsModalHandler();
