@@ -1,5 +1,6 @@
 const gameBoard = (function() {
     const board = [];
+    
 
     for (let i = 0; i<9; i++) {
         board[i]= [''];
@@ -9,24 +10,69 @@ const gameBoard = (function() {
 
     const newMove = (cell, player) => {
         cell[0] = player.getMarker();
-    }
-
+    };
 
     return {getBoard, newMove};
 })();
 
 const displayController = (function() {
     const boardDiv = document.querySelector('.gameboard');
-    
-
-    const players  = [];
-
     const settingsModal = document.querySelector('.settings-modal');
     const gameSettings = document.querySelector('#game-settings')
-
     const submitButton = document.querySelector('#submit-button');
-
     const modalCloseButton = document.querySelector('.modal-close-btn');
+    const playerOneInput = document.querySelector('#playerOneName');
+    const playerTwoInput = document.querySelector('#playerTwoName');
+    const players  = [];
+
+    let activePlayer;
+    const getPlayers = () => players;
+    const getActivePlayer = () => activePlayer;
+
+    function setPlayers() {
+        const player1 = Player(playerOneInput.value, 'X');
+        const player2 = Player(playerTwoInput.value, 'O');
+        players.push(player1, player2);
+        console.log(players[0].getMarker());
+        activePlayer = players[0];
+    };
+
+    function changeTurn() {
+        activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    };
+
+    const isSubset = (array1, array2) => array2.every((element) => array1.includes(element))
+
+    function getPlayersTokens() {
+        const board = gameBoard.getBoard();
+        const currentPlayersTokens = [];
+        board.forEach((x) => {
+            if (x[0] === `${activePlayer.getMarker()}`) {
+                currentPlayersTokens.push(board.indexOf(x))
+            }});
+        return currentPlayersTokens;
+    }
+
+    function checkWin() {
+        const currentPlayersPositions = getPlayersTokens();
+        const winningCombos = [
+            [0,1,2],
+            [0,3,6],
+            [0,4,8],
+            [3,4,5],
+            [1,4,7],
+            [2,4,6],
+            [6,7,8],
+            [2,5,8],
+        ];
+        const gameWon = winningCombos.find((combo) => isSubset(currentPlayersPositions, combo));
+
+        return gameWon
+    };
+
+    function endGameModalHandler() {
+
+    }
 
 
     function settingsModalHandler() {
@@ -34,9 +80,9 @@ const displayController = (function() {
         window.onclick = function(e) {
             if(e.target == settingsModal) {
                 settingsModal.style.display = "none"
-            }
-        }
-    }
+            };
+        };
+    };
 
 
 
@@ -51,7 +97,6 @@ const displayController = (function() {
     function updateDisplay() {
         boardDiv.textContent = "";
         const board = gameBoard.getBoard();
-
         board.forEach(cell => {
             const cellButton = document.createElement('button');
             cellButton.dataset.indexNumber = `${board.indexOf(cell)}`
@@ -63,30 +108,32 @@ const displayController = (function() {
 
 
 
-    function clickHandler(e) {
+    function placeToken(e) {
         const chosenCell = e.target.dataset.indexNumber;
         console.log(chosenCell);
-        gameBoard.newMove(gameBoard.getBoard()[chosenCell], Trevor);
+        gameBoard.newMove(gameBoard.getBoard()[chosenCell], activePlayer);
         updateDisplay();
     };
 
-    boardDiv.addEventListener('click', clickHandler)
+    boardDiv.addEventListener('click', (e) => {
+        placeToken(e);
+        console.log(!!(checkWin()));
+        changeTurn();
+    });
+
     modalCloseButton.addEventListener('click', () => {
         settingsModal.style.display = "none";
     });
+
     submitButton.addEventListener('click', (event) => {
         event.preventDefault();
         settingsModal.style.display = "none";
+        setPlayers();
         gameSettings.reset();
      
     });
 
-    return {
-        updateDisplay,
-        getGameMode,
-        clickHandler,
-        settingsModalHandler
-    };
+    return {updateDisplay, getGameMode, placeToken, settingsModalHandler, getPlayers, setPlayers, getActivePlayer, checkWin};
 })();
 
 const Player = (name, marker) => {
@@ -100,6 +147,6 @@ const Player = (name, marker) => {
 };
 
 gameBoard.getBoard();
-const Trevor = Player('Trevor', 'O');
+
 displayController.updateDisplay();
 displayController.settingsModalHandler();
